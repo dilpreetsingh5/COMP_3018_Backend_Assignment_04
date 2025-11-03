@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import loanRoutes from "./api/v1/routes/loanRoutes";
 
 import {
     accessLogger,
@@ -20,14 +21,15 @@ if (process.env.NODE_ENV === "production") {
     app.use(consoleLogger);
 }
 
+// API Routes
+app.use("/api/v1", loanRoutes);
+
 // Middleware
 app.use(morgan('combined'));
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+
 
 // Global error handling middleware (MUST be applied last)
 app.use(errorHandler);
