@@ -1,7 +1,7 @@
 import { initializeApp, cert, ServiceAccount } from "firebase-admin/app";
 import { getAuth, Auth } from "firebase-admin/auth";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
-import serviceAccount from ".json"; // needed  to import service account key Update service account file path
+const serviceAccount = require("../../Security_Key.json") as ServiceAccount; 
 
 initializeApp({
     credential: cert(serviceAccount as ServiceAccount),
