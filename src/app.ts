@@ -1,6 +1,5 @@
 import express from 'express';
 import morgan from 'morgan';
-import loanRoutes from "./api/v1/routes/loanRoutes";
 
 import {
     accessLogger,
@@ -8,6 +7,8 @@ import {
     consoleLogger,
 } from "./api/v1/middleware/logger";
 import errorHandler from "./api/v1/middleware/errorHandler";
+import loanRoutes from "./api/v1/routes/loanRoutes";
+import userRoutes from "./api/v1/routes/userRoutes";
 
 const app = express();
 
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === "production") {
 
 // API Routes
 app.use("/api/v1", loanRoutes);
+app.use("/api/v1", userRoutes);
 
 // Middleware
 app.use(morgan('combined'));
