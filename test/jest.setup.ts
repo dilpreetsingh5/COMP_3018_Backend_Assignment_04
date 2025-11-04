@@ -3,6 +3,7 @@ jest.mock("../config/firebaseConfig", () => ({
     auth: {
         verifyIdToken: jest.fn(),
         getUser: jest.fn(),
+        setCustomUserClaims: jest.fn(),
     },
     db: {
         collection: jest.fn(),
