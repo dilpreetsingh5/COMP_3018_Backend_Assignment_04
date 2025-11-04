@@ -29,6 +29,11 @@ const isAuthorized = (opts: AuthorizationOptions): MiddlewareFunction => {
                 return next();
             }
 
+            // Allow if the user is setting claims for themselves
+            if (opts.allowSameUser && req.body.uid && uid === req.body.uid) {
+                return next();
+            }
+            
             // If no role exists on the user, throw Forbidden response
             if (!role) {
                 throw new AuthorizationError(

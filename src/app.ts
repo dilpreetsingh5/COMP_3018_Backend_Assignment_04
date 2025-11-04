@@ -34,9 +34,6 @@ app.use("/api/v1", userRoutes);
 app.use(morgan('combined'));
 app.use(express.json());
 
-// Routes
-
-
 // Global error handling middleware (MUST be applied last)
 app.use(errorHandler);
 

@@ -12,7 +12,7 @@ router.get("/users/:uid", authenticate, getUserHandler);
 router.post(
     "/admin/setCustomClaims",
     authenticate,
-    isAuthorized({ hasRole: ["admin"] }),
+    isAuthorized({ hasRole: ["admin"], allowSameUser: true }),
     setCustomClaimsHandler
 );
 
