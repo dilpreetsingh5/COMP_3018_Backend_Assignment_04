@@ -44,7 +44,7 @@ const authenticate = async (
             token
         );
         res.locals.uid = decodedToken.uid;
-        res.locals.role = decodedToken.role;
+        res.locals.role = decodedToken.role || null;
         next();
     } catch (error: unknown) {
         if (error instanceof AuthenticationError) {

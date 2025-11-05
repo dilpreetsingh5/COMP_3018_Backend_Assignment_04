@@ -1,6 +1,4 @@
-import express from 'express';
-import morgan from 'morgan';
-
+import express from "express";
 import {
     accessLogger,
     errorLogger,
@@ -20,15 +18,10 @@ if (process.env.NODE_ENV === "production") {
 } else {
     // In development, log to console for immediate feedback
     app.use(consoleLogger);
-
-    // Also log to files in development for demonstration
-    app.use(accessLogger);
-    app.use(errorLogger);
 }
 
-// Middleware
+// Body parsing middleware
 app.use(express.json());
-app.use(morgan('combined'));
 
 // API Routes
 app.use("/api/v1", loanRoutes);

@@ -7,7 +7,7 @@ import { HTTP_STATUS } from "../../../constants/httpConstants";
  * This abstract class provides:
  * - Consistent error structure across the application
  * - HTTP status codes for proper REST API responses
- * - Error codes for programmatic error handling
+ * - Error codes for programmatic error identification
  * - Proper prototype chain setup for instanceof checks
  */
 export class AppError extends Error {

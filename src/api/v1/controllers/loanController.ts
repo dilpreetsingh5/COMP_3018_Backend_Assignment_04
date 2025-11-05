@@ -1,20 +1,48 @@
 import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../models/responseModel";
+import { ServiceError } from "../errors/errors";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
+
+// Mock loan data for demonstration
+const mockLoans = [
+    {
+        id: "1",
+        applicantName: "John Doe",
+        amount: 50000,
+        status: "pending",
+        riskScore: 75,
+        createdAt: new Date().toISOString(),
+    },
+    {
+        id: "2",
+        applicantName: "Jane Smith",
+        amount: 25000,
+        status: "approved",
+        riskScore: 45,
+        createdAt: new Date().toISOString(),
+    },
+];
 
 /**
  * Create a new loan application
- * POST /api/v1/loans
  */
-export const createLoanHandler = (req: Request, res: Response, next: NextFunction) => {
+export const createLoanHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     try {
-        // For now, return hardcoded response
-        const loanData = {
-            id: "loan-123",
-            amount: req.body.amount || 10000,
+        // For now, return a mock response
+        const newLoan = {
+            id: "3",
+            applicantName: req.body.applicantName || "New Applicant",
+            amount: req.body.amount || 0,
             status: "pending",
-            createdAt: new Date().toISOString()
+            riskScore: Math.floor(Math.random() * 100),
+            createdAt: new Date().toISOString(),
         };
-        res.status(201).json(successResponse(loanData, "Loan application created successfully"));
+
+        res.status(201).json(successResponse(newLoan, "Loan application created successfully"));
     } catch (error) {
         next(error);
     }
@@ -22,20 +50,14 @@ export const createLoanHandler = (req: Request, res: Response, next: NextFunctio
 
 /**
  * Get all loans
- * GET /api/v1/loans
  */
-export const getLoansHandler = (req: Request, res: Response, next: NextFunction) => {
+export const getLoansHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     try {
-        // For now, return hardcoded response
-        const loans = [
-            {
-                id: "loan-123",
-                amount: 10000,
-                status: "pending",
-                createdAt: new Date().toISOString()
-            }
-        ];
-        res.json(successResponse(loans, "Loans retrieved successfully"));
+        res.json(successResponse(mockLoans, "Loans retrieved successfully"));
     } catch (error) {
         next(error);
     }
@@ -43,18 +65,20 @@ export const getLoansHandler = (req: Request, res: Response, next: NextFunction)
 
 /**
  * Get a loan by ID
- * GET /api/v1/loans/:id
  */
-export const getLoanByIdHandler = (req: Request, res: Response, next: NextFunction) => {
+export const getLoanByIdHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     try {
         const { id } = req.params;
-        // For now, return hardcoded response
-        const loan = {
-            id,
-            amount: 10000,
-            status: "pending",
-            createdAt: new Date().toISOString()
-        };
+        const loan = mockLoans.find((l) => l.id === id);
+
+        if (!loan) {
+            throw new ServiceError("Loan not found", "LOAN_NOT_FOUND", HTTP_STATUS.NOT_FOUND);
+        }
+
         res.json(successResponse(loan, "Loan retrieved successfully"));
     } catch (error) {
         next(error);
@@ -62,19 +86,29 @@ export const getLoanByIdHandler = (req: Request, res: Response, next: NextFuncti
 };
 
 /**
- * Update a loan (review)
- * PUT /api/v1/loans/:id
+ * Update a loan (review/update)
  */
-export const updateLoanHandler = (req: Request, res: Response, next: NextFunction) => {
+export const updateLoanHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     try {
         const { id } = req.params;
-        // For now, return hardcoded response
+        const loan = mockLoans.find((l) => l.id === id);
+
+        if (!loan) {
+            throw new ServiceError("Loan not found", "LOAN_NOT_FOUND", HTTP_STATUS.NOT_FOUND);
+        }
+
+        // Mock update
         const updatedLoan = {
-            id,
-            amount: req.body.amount || 10000,
-            status: req.body.status || "reviewed",
-            updatedAt: new Date().toISOString()
+            ...loan,
+            status: req.body.status || loan.status,
+            riskScore: req.body.riskScore || loan.riskScore,
+            updatedAt: new Date().toISOString(),
         };
+
         res.json(successResponse(updatedLoan, "Loan updated successfully"));
     } catch (error) {
         next(error);
@@ -83,18 +117,27 @@ export const updateLoanHandler = (req: Request, res: Response, next: NextFunctio
 
 /**
  * Approve a loan
- * PUT /api/v1/loans/:id/approve
  */
-export const approveLoanHandler = (req: Request, res: Response, next: NextFunction) => {
+export const approveLoanHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     try {
         const { id } = req.params;
-        // For now, return hardcoded response
+        const loan = mockLoans.find((l) => l.id === id);
+
+        if (!loan) {
+            throw new ServiceError("Loan not found", "LOAN_NOT_FOUND", HTTP_STATUS.NOT_FOUND);
+        }
+
+        // Mock approval
         const approvedLoan = {
-            id,
-            amount: 10000,
+            ...loan,
             status: "approved",
-            approvedAt: new Date().toISOString()
+            approvedAt: new Date().toISOString(),
         };
+
         res.json(successResponse(approvedLoan, "Loan approved successfully"));
     } catch (error) {
         next(error);

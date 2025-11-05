@@ -5,14 +5,19 @@ import isAuthorized from "../middleware/authorize";
 
 const router: express.Router = express.Router();
 
-// User routes
-router.get("/users/:uid", authenticate, getUserHandler);
+// Get user details (authenticated users can view their own details)
+router.get(
+    "/users/:id",
+    authenticate,
+    isAuthorized({ hasRole: ["officer", "manager"], allowSameUser: true }),
+    getUserHandler
+);
 
-// Admin routes
+// Set custom claims (admin route - restricted to manager role)
 router.post(
     "/admin/setCustomClaims",
     authenticate,
-    isAuthorized({ hasRole: ["admin"], allowSameUser: true }),
+    isAuthorized({ hasRole: ["manager"] }),
     setCustomClaimsHandler
 );
 

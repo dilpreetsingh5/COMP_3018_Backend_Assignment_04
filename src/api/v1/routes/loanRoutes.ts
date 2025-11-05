@@ -11,7 +11,6 @@ import isAuthorized from "../middleware/authorize";
 
 const router: express.Router = express.Router();
 
-// Loan application routes
 router.post(
     "/loans",
     authenticate,
@@ -19,19 +18,14 @@ router.post(
     createLoanHandler
 );
 
-router.get(
-    "/loans",
-    authenticate,
-    isAuthorized({ hasRole: ["officer", "manager"] }),
-    getLoansHandler
-);
+router.get("/loans", authenticate, isAuthorized({ hasRole: ["officer", "manager"] }), getLoansHandler);
 
 router.get("/loans/:id", authenticate, getLoanByIdHandler);
 
 router.put(
     "/loans/:id",
     authenticate,
-    isAuthorized({ hasRole: ["officer"] }),
+    isAuthorized({ hasRole: ["officer", "manager"], allowSameUser: true }),
     updateLoanHandler
 );
 

@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import authenticate from "../src/api/v1/middleware/authenticate";
-import { auth } from "../src/config/firebaseConfig";
-import { AuthenticationError } from "../src/api/v1/errors/errors";
+import { Request, Response, NextFunction } from "express";
+import authenticate from "../authenticate";
+import { auth } from "../../../../config/firebaseConfig";
+import { AuthenticationError } from "../../errors/errors";
 
 // Mock Firebase auth
-jest.mock("../src/config/firebaseConfig", () => ({
+jest.mock("../../../../config/firebaseConfig", () => ({
     auth: {
         verifyIdToken: jest.fn(),
     },
