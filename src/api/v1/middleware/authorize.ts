@@ -29,11 +29,6 @@ const isAuthorized = (opts: AuthorizationOptions): MiddlewareFunction => {
                 return next();
             }
 
-            // Allow if the same user is accessing their own data
-            if (opts.allowSameUser && id && uid === id) {
-                return next();
-            }
-            
             // If no role exists on the user, throw Forbidden response
             if (!role) {
                 throw new AuthorizationError(
