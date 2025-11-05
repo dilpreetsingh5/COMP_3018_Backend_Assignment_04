@@ -26,13 +26,13 @@ if (process.env.NODE_ENV === "production") {
     app.use(errorLogger);
 }
 
+// Middleware
+app.use(express.json());
+app.use(morgan('combined'));
+
 // API Routes
 app.use("/api/v1", loanRoutes);
 app.use("/api/v1", userRoutes);
-
-// Middleware
-app.use(morgan('combined'));
-app.use(express.json());
 
 // Global error handling middleware (MUST be applied last)
 app.use(errorHandler);
