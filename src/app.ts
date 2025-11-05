@@ -18,6 +18,9 @@ if (process.env.NODE_ENV === "production") {
 } else {
     // In development, log to console for immediate feedback
     app.use(consoleLogger);
+    // Also log to files in development for demonstration
+    app.use(accessLogger);
+    app.use(errorLogger);
 }
 
 // Body parsing middleware
