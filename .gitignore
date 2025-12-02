@@ -1,2 +1,5 @@
 node_modules/
 dist/
+logs/
+*.log
+todo-5d4a5-firebase-adminsdk-fbsvc-d27ffc1786.json
